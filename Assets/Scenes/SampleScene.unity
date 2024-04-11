@@ -157,9 +157,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &389579681
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,6 +181,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9, y: 4.89, z: 1.04}
   m_Center: {x: 0, y: -1.54, z: 0}
+--- !u!114 &389579684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389579676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb9a47cd2acf4d4cb29ecfd1beb1942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 7
+  groundDrag: 1
+  jumpForce: 1
+  jumpCooldown: 1
+  airMultiplier: 1
+  walkSpeed: 0
+  sprintSpeed: 0
+  jumpKey: 32
+  playerHeight: 0
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  orientation: {fileID: 389579679}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +311,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -360,13 +386,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 3.38, z: -2.58}
+  m_LocalPosition: {x: -0.2, y: 4.804, z: 3.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646a4a5246307ae45a10f9931bbb6356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensX: 400
+  sensY: 400
+  orientation: {fileID: 0}
 --- !u!1 &966139506
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1257755636}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +484,7 @@ GameObject:
   - component: {fileID: 1834664003}
   - component: {fileID: 1834664002}
   - component: {fileID: 1834664001}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,6 +638,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: picachan 2(after rig)(SAMURAI VER) (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: da51669529c5ad44ca4b3a9af8ab8381, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -607,4 +652,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da51669529c5ad44ca4b3a9af8ab8381, type: 3}
       insertIndex: -1
       addedObject: {fileID: 389579681}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da51669529c5ad44ca4b3a9af8ab8381, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 389579684}
   m_SourcePrefab: {fileID: 100100000, guid: da51669529c5ad44ca4b3a9af8ab8381, type: 3}
