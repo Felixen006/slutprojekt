@@ -1,12 +1,14 @@
 // Some stupid rigidbody based movement by Dani
 
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
-    //Assingables
+    //private int jumpcount = 0;
+    //public int maxJumps = 2;
+    //Assignables
     public Transform playerCam;
     public Transform orientation;
 
@@ -47,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 normalVector = Vector3.up;
     private Vector3 wallNormalVector;
 
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -69,7 +72,31 @@ public class PlayerMovement : MonoBehaviour
     {
         MyInput();
         Look();
+        //if ((Input.GetKeyDown(KeyCode.Space)) && (jumpcount > 0) )
+        //{
+        //    rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+        //    jumpcount -= 1;
+        //}
     }
+
+    //public void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "isFloor")
+    //    {
+    //        grounded = true;
+    //        jumpcount = maxJumps;
+    //    }
+    //}
+    //
+    //public void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "isFloor")
+    //    {
+    //        grounded = false;
+    //    }
+    //}
+
+
 
     /// <summary>
     /// Find user input. Should put this in its own class but im lazy
@@ -166,6 +193,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce * 1.5f);
             rb.AddForce(normalVector * jumpForce * 0.5f);
 
+
             //If jumping while falling, reset y velocity.
             Vector3 vel = rb.velocity;
             if (rb.velocity.y < 0.5f)
@@ -174,6 +202,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
             Invoke(nameof(ResetJump), jumpCooldown);
+
         }
     }
 
@@ -281,6 +310,9 @@ public class PlayerMovement : MonoBehaviour
                 CancelInvoke(nameof(StopGrounded));
             }
         }
+
+        
+
 
         //Invoke ground/wall cancel, since we can't check normals with CollisionExit
         float delay = 3f;
