@@ -1,4 +1,3 @@
-// Some stupid rigidbody based movement by Dani
 
 using JetBrains.Annotations;
 using System;
@@ -6,8 +5,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //private int jumpcount = 0;
-    //public int maxJumps = 2;
+
+    private bool doubleJumped = false;
+    private int jumpcount = 0;
+    public int maxJumps = 2;
     //Assignables
     public Transform playerCam;
     public Transform orientation;
@@ -72,29 +73,14 @@ public class PlayerMovement : MonoBehaviour
     {
         MyInput();
         Look();
-        //if ((Input.GetKeyDown(KeyCode.Space)) && (jumpcount > 0) )
-        //{
-        //    rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
-        //    jumpcount -= 1;
-        //}
+
+        if (grounded)
+        {
+            doubleJumped = false; // Reset double jump state when grounded
+        }
     }
 
-    //public void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "isFloor")
-    //    {
-    //        grounded = true;
-    //        jumpcount = maxJumps;
-    //    }
-    //}
-    //
-    //public void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "isFloor")
-    //    {
-    //        grounded = false;
-    //    }
-    //}
+
 
 
 
@@ -103,6 +89,16 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void MyInput()
     {
+        if (jumping && !doubleJumped)
+        {
+            if (jumpcount < maxJumps) // Check if the player hasn't reached the maximum jumps
+            {
+                jumpcount++;
+                Jump();
+                doubleJumped = true; // Set double jump state
+            }
+        }
+
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
@@ -185,6 +181,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+
+        if (grounded || !doubleJumped) // Check if grounded or double jump is available
+        {
+            readyToJump = false;
+
+            // Add jump forces
+            rb.AddForce(Vector2.up * jumpForce * 1.5f);
+            rb.AddForce(normalVector * jumpForce * 0.5f);
+
+            // If jumping while falling, reset y velocity
+            Vector3 vel = rb.velocity;
+            if (rb.velocity.y < 0.5f)
+                rb.velocity = new Vector3(vel.x, 0, vel.z);
+            else if (rb.velocity.y > 0)
+                rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
+
+            // Reset double jump state if double jump is performed
+            if (!grounded && !doubleJumped)
+            {
+                doubleJumped = true;
+            }
+
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+
+
         if (grounded && readyToJump)
         {
             readyToJump = false;
