@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    public bool activeGrapple;
+    public bool freeze;
     private bool doubleJumped = false;
     private int jumpcount = 0;
     public int maxJumps = 2;
@@ -26,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public float maxSpeed = 20;
     public bool grounded;
     public LayerMask whatIsGround;
-
+    public movementstate state;
     public float counterMovement = 0.175f;
     private float threshold = 0.01f;
     public float maxSlopeAngle = 35f;
@@ -68,9 +69,18 @@ public class PlayerMovement : MonoBehaviour
     {
         Movement();
     }
-
+    public void ResetVelocity()
+    {
+        rb.velocity = Vector3.zero;
+    }
     private void Update()
     {
+        if (freeze)
+        {
+            state = movementstate.freeze;
+            moveSpeed = 0;
+            rb.velocity = Vector3.zero;
+        }
         MyInput();
         Look();
 
@@ -80,13 +90,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public enum movementstate
+    {
+        freeze,
+    }
 
 
 
 
-    /// <summary>
-    /// Find user input. Should put this in its own class but im lazy
-    /// </summary>
+
     private void MyInput()
     {
         if (jumping && !doubleJumped)
@@ -111,6 +123,13 @@ public class PlayerMovement : MonoBehaviour
             StopCrouch();
     }
 
+    private Vector3 velocityToSet;
+
+    private void SetVelocity()
+    {
+        rb.velocity = velocityToSet;
+    }
+
     private void StartCrouch()
     {
         transform.localScale = crouchScale;
@@ -132,6 +151,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Movement()
     {
+
+        if (activeGrapple) return;
         //Extra gravity
         rb.AddForce(Vector3.down * Time.deltaTime * 10);
 
@@ -182,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
 
-        if (grounded || !doubleJumped) // Check if grounded or double jump is available
+        if ((grounded || !doubleJumped) && !activeGrapple)
         {
             readyToJump = false;
 
@@ -282,11 +303,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Find the velocity relative to where the player is looking
-    /// Useful for vectors calculations regarding movement and limiting movement
-    /// </summary>
-    /// <returns></returns>
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        activeGrapple = true;
+
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+
+        //Invoke(nameof(ResetRestrictions), 3f);
+    }
+
+    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity)
+            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+
+        return velocityXZ + velocityY;
+    }
+
     public Vector2 FindVelRelativeToLook()
     {
         float lookAngle = orientation.transform.eulerAngles.y;
