@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //x = 0;
-    //y = 0;
-
+    
     // Assignables
     public Transform playerCam;
     public Transform orientation;
@@ -108,13 +106,10 @@ public class PlayerMovement : MonoBehaviour
         //    }
         //}
 
-        x = Input.GetAxis("Horizontal");
-        y = Input.GetAxis("Vertical");
+        x = Input.GetAxisRaw("Horizontal");
+        y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetKey(KeyCode.Space);
         crouching = Input.GetKey(KeyCode.LeftControl);
-
-        Debug.Log("Input - y:" + y);
-        Debug.Log("Input - x:" + x);
 
         // Crouching
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -193,8 +188,6 @@ public class PlayerMovement : MonoBehaviour
         // Apply forces to move player
         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
         rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
-        Debug.Log("Movement - y:" + y);
-        Debug.Log("Movement - x:" + x);
     }
 
     private void Jump()
