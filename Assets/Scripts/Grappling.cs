@@ -35,11 +35,11 @@ public class Grappling : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(grappleKey)) StartGrapple();
-
+    
         if (grapplingCdTimer > 0)
             grapplingCdTimer -= Time.deltaTime;
     }
-
+    
     private void LateUpdate()
     {
          if (grappling)
