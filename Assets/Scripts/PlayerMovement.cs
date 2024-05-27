@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 550f;
     public int maxJumps = 2;
     private bool readyToJump = true;
-    private float jumpCooldown = 0.25f;
+    [SerializeField]private float jumpCooldown = 0.25f;
     private bool doubleJumped = false;
     private int jumpcount = 0;
 
@@ -96,19 +96,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void MyInput()
     {
-        if (jumping && !doubleJumped)
-        {
-            if (jumpcount < maxJumps) // Check if the player hasn't reached the maximum jumps
-            {
-                jumpcount++;
-                Jump();
-                doubleJumped = true; // Set double jump state
-            }
-        }
+        //if (jumping && !doubleJumped)
+        //{
+        //    if (jumpcount < maxJumps) // Check if the player hasn't reached the maximum jumps
+        //    {
+        //        jumpcount++;
+        //        Jump();
+        //        doubleJumped = true; // Set double jump state
+        //    }
+        //}
 
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
-        jumping = Input.GetButton("Jump");
+        jumping = Input.GetKey(KeyCode.Space);
         crouching = Input.GetKey(KeyCode.LeftControl);
 
         // Crouching
@@ -151,7 +151,10 @@ public class PlayerMovement : MonoBehaviour
         CounterMovement(x, y, mag);
 
         // If holding jump && ready to jump, then jump
-        if (readyToJump && jumping) Jump();
+        if (readyToJump && jumping)
+        { 
+            Jump(); 
+        }
 
         // Set max speed
         float maxSpeed = this.maxSpeed;
@@ -189,31 +192,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if ((grounded || !doubleJumped) && !activeGrapple)
-        {
-            readyToJump = false;
+        //if (true)
+        //{
+        //    readyToJump = false;
+        //
+        //    // Add jump forces
+        //    rb.AddForce(Vector2.up * jumpForce * 1.5f);
+        //    rb.AddForce(normalVector * jumpForce * 0.5f);
+        //
+        //    // If jumping while falling, reset y velocity
+        //    Vector3 vel = rb.velocity;
+        //    if (rb.velocity.y < 0.5f)
+        //        rb.velocity = new Vector3(vel.x, 0, vel.z);
+        //    else if (rb.velocity.y > 0)
+        //        rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
+        //
+        //    // Reset double jump state if double jump is performed
+        //    if (!grounded && !doubleJumped)
+        //    {
+        //        doubleJumped = true;
+        //    }
+        //
+        //    Invoke(nameof(ResetJump), jumpCooldown);
+        //}
 
-            // Add jump forces
-            rb.AddForce(Vector2.up * jumpForce * 1.5f);
-            rb.AddForce(normalVector * jumpForce * 0.5f);
-
-            // If jumping while falling, reset y velocity
-            Vector3 vel = rb.velocity;
-            if (rb.velocity.y < 0.5f)
-                rb.velocity = new Vector3(vel.x, 0, vel.z);
-            else if (rb.velocity.y > 0)
-                rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
-
-            // Reset double jump state if double jump is performed
-            if (!grounded && !doubleJumped)
-            {
-                doubleJumped = true;
-            }
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-
-        if (grounded && readyToJump)
+        if (grounded)
         {
             readyToJump = false;
 
