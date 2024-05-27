@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     public bool activeGrapple;
     public bool freeze;
     private Rigidbody rb;
+    public bool swinging;
 
     // Sliding
     private Vector3 normalVector = Vector3.up;
