@@ -612,7 +612,6 @@ GameObject:
   - component: {fileID: 728096977}
   - component: {fileID: 728096980}
   - component: {fileID: 728096979}
-  - component: {fileID: 728096978}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -635,27 +634,6 @@ Transform:
   m_Father: {fileID: 1618124748}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &728096978
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728096976}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &728096979
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -963,24 +941,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88ebee20874e1c459db38d51f1efe2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeGrapple: 0
-  freeze: 0
-  maxJumps: 2
   playerCam: {fileID: 255868104}
   orientation: {fileID: 1618124748}
-  sensMultiplier: 5
   moveSpeed: 4500
   maxSpeed: 20
-  grounded: 0
+  grounded: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  state: 0
   counterMovement: 0.175
+  groundDrag: 0
   maxSlopeAngle: 35
   slideForce: 400
   slideCounterMovement: 0.2
   jumpForce: 550
+  maxJumps: 2
+  sensMultiplier: 5
+  activeGrapple: 0
+  freeze: 0
 --- !u!114 &869581075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,7 +984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37c2c26beb1dd54c98b63ebe77fcb89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 0}
   cam: {fileID: 231237650}
   gunTip: {fileID: 941124756}
   whatIsGrappleable:
@@ -1015,9 +992,9 @@ MonoBehaviour:
   lr: {fileID: 1321108980}
   maxGrappleDistance: 25
   grappleDelayTime: 0.25
-  overshootYAxis: 2
+  overshootYAxis: 0
   grapplingCd: 1
-  grappleKey: 310
+  grappleKey: 309
 --- !u!1 &941124755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321108978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.68000007, y: -0.049999952, z: -0.51}
+  m_LocalPosition: {x: -0.68, y: -0.049999952, z: -0.51}
   m_LocalScale: {x: 0.36328283, y: 0.32732874, z: 1.1040226}
   m_ConstrainProportionsScale: 0
   m_Children:
